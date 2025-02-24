@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using TemplateAcceleratorV1.Models;
 
-namespace BLKTemplate
+namespace TemplateAcceleratorV1
 {
     public class Program
     {
@@ -14,6 +16,10 @@ namespace BLKTemplate
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Register the TemplateDbContext with dependency injection  
+            builder.Services.AddDbContext<TemplateDbContext>(options => { options
+                .UseSqlServer(builder.Configuration["ConnectionStrings:BLKDbContextConnection"]); });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -24,9 +30,7 @@ namespace BLKTemplate
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
 
             app.MapControllers();
 
