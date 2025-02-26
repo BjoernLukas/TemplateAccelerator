@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TemplateAcceleratorV1.Models;
+using TemplateAcceleratorV1.DataUtility;
 
 namespace TemplateAcceleratorV1
 {

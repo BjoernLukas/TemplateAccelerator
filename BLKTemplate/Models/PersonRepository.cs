@@ -1,6 +1,8 @@
-﻿namespace TemplateAcceleratorV1.Models
+﻿using TemplateAcceleratorV1.DataUtility;
+
+namespace TemplateAcceleratorV1.Models
 {
-    public class PersonRepository
+    public class PersonRepository : IPersonRepository
     {
         private readonly TemplateDbContext _dbContext;
 
@@ -9,9 +11,19 @@
             _dbContext = acceleratorDbContext ?? throw new ArgumentNullException(nameof(acceleratorDbContext));
         }
 
-        // https://app.pluralsight.com/ilx/video-courses/72ba6cdd-6f01-4bf1-a17a-37419596f317/8ba3f52b-db88-4611-b414-b2ba90d0151b/cfe35cd6-4fcc-4923-b911-0589e9381688
+        public IEnumerable<Person> GetAllPersons()
+        {
+            throw new NotImplementedException();
+        }
 
+        public Person GetPerson(Guid PersonId)
+        {
+            throw new NotImplementedException();
+        }
 
        
+
+
+
     }
 }

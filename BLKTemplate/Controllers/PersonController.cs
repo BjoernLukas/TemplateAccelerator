@@ -1,33 +1,54 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TemplateAcceleratorV1.DataUtility;
 using TemplateAcceleratorV1.Models;
+namespace TemplateAcceleratorV1.Controllers;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace TemplateAcceleratorV1.Controllers
+[ApiController]
+[Route("api/[controller]")]
+public class PersonController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class PersonController : ControllerBase
+    private readonly IPersonRepository _personRepository;
+    private readonly TemplateDbContext _templateDbContext;
+
+    public PersonController(IPersonRepository personRepository, TemplateDbContext templateDbContext)
+    {
+        _personRepository = personRepository ?? throw new ArgumentNullException(nameof(personRepository));
+        _templateDbContext = templateDbContext;
+    }
+
+
+    [HttpGet(Name = "ByName/{name}")]
+    public IActionResult GetPersonByName(string name)
+    {
+        var person = _templateDbContext.Set<Person>().Where(p => p.Name == name).FirstOrDefault();
+
+        return person is null ? NotFound() : Ok(person);
+    }
+
+    [HttpGet("GetAll")]
+    public IActionResult GetAllPersons()
+    {
+        var allPersons = _templateDbContext.Persons.ToList();
+
+        return Ok(allPersons);
+    }
+
+    [HttpPost("CreateBlk")]
+    public IActionResult CreateBlkPerson()
     {
 
+        _templateDbContext.Set<Person>().Add(new Person { Name = "BLK", Age = 38, Description = "First test for this", PersonId = Guid.NewGuid() });
 
-        [HttpGet(Name = "GetPerson")]
-        public IActionResult GetPerson(string name)
-        {
+        //Todo Add some validation Checks
 
-            //TODO: in time get by name via TemplateDbContext when database is done
-            var newTestPerson = new Person
-            { Name = "BLK", Age = 38, Description = "Do this later", PersonId = Guid.NewGuid() };
+        return Ok();
+    }
 
-            if (name != newTestPerson.Name)
-            { throw new Exception("Incorrect input name"); }
+    [HttpGet("Test")]
+    public IActionResult Test()
+    {
+        
 
-
-
-            return Ok(newTestPerson); //TODO: add something like this return result is null ? NotFound() : Ok(result);
-        }
-
-
-
+        return Ok("Hello Swagger");
     }
 }
