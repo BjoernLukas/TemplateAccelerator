@@ -7,12 +7,10 @@ namespace TemplateAcceleratorV1.Controllers;
 [Route("api/[controller]")]
 public class PersonController : ControllerBase
 {
-    private readonly IPersonRepository _personRepository;
     private readonly TemplateDbContext _templateDbContext;
 
-    public PersonController(IPersonRepository personRepository, TemplateDbContext templateDbContext)
+    public PersonController(TemplateDbContext templateDbContext)
     {
-        _personRepository = personRepository ?? throw new ArgumentNullException(nameof(personRepository));
         _templateDbContext = templateDbContext;
     }
 
@@ -39,16 +37,23 @@ public class PersonController : ControllerBase
 
         _templateDbContext.Set<Person>().Add(new Person { Name = "BLK", Age = 38, Description = "First test for this", PersonId = Guid.NewGuid() });
 
-        //Todo Add some validation Checks
+
+        _templateDbContext.SaveChanges();
 
         return Ok();
     }
 
-    [HttpGet("Test")]
-    public IActionResult Test()
-    {
-        
 
-        return Ok("Hello Swagger");
+    [HttpPost]
+    public IActionResult CreatePerson([FromBody] Person person)
+    {
+        _templateDbContext.Set<Person>().Add(person);
+        _templateDbContext.SaveChanges();
+
+        return Ok();
     }
+
+
+
+
 }
