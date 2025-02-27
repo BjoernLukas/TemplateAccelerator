@@ -1,7 +1,7 @@
+using BetaMaxRMS.DataUtility;
 using Microsoft.EntityFrameworkCore;
-using TemplateAcceleratorV1.DataUtility;
 
-namespace TemplateAcceleratorV1
+namespace BetaMaxRMS
 {
     public class Program
     {
@@ -16,9 +16,12 @@ namespace TemplateAcceleratorV1
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Register the TemplateDbContext with dependency injection  
-            builder.Services.AddDbContext<TemplateDbContext>(options => { options
-                .UseSqlServer(builder.Configuration["ConnectionStrings:BLKDbContextConnection"]); });
+            // Register the BetaMaxDbContext with dependency injection  
+            builder.Services.AddDbContext<BetaMaxDbContext>(options =>
+            {
+                options
+                .UseSqlServer(builder.Configuration["ConnectionStrings:BLKDbContextConnection"]);
+            });
 
             var app = builder.Build();
 
