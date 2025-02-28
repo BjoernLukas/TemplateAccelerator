@@ -1,4 +1,5 @@
 using BetaMaxRMS.DataUtility;
+using BetaMaxRMS.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace BetaMaxRMS
@@ -8,9 +9,7 @@ namespace BetaMaxRMS
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-
+            
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -22,6 +21,8 @@ namespace BetaMaxRMS
                 options
                 .UseSqlServer(builder.Configuration["ConnectionStrings:BLKDbContextConnection"]);
             });
+
+            builder.Services.AddScoped<IMovieRentalCalculationService, MovieRentalCalculationService>();
 
             var app = builder.Build();
 

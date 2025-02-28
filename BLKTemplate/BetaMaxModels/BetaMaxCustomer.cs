@@ -2,26 +2,20 @@
 {
 
 
-    public class BetaMaxCustomer : ICustomer
-    {
-        public required Guid Id { get; set; }
+    public class BetaMaxCustomer
+    {      
+        //Remark: init could be used in a case where I want to recreate old Customers from an old system. 
+        public  Guid Id { get; init; } = Guid.NewGuid();
 
         public required string Name { get; set; }
 
         public string? Remarks { get; set; }
 
-        public GenderInfo? Gender { get; set; }
-        IList<RentalRecord> ICustomer.Rentals { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public GenderInfo? Gender { get; set; } //Todo: clean up if not needed
 
-        void ICustomer.AddRental(RentalRecord rental)
-        {
-            throw new NotImplementedException();
-        }
+        public List<MovieRental> MovieRentals { get; init; } = [];
 
-        string ICustomer.GetStatement()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 
     public enum GenderInfo
@@ -29,7 +23,6 @@
         Male,
         Female,
         Other,
-
     }
 
 }

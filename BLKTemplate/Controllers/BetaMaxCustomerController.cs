@@ -16,7 +16,7 @@ public class BetaMaxCustomerController : ControllerBase
 
 
     [HttpGet(Name = "ByName/{name}")]
-    public IActionResult GetPersonByName(string name)
+    public IActionResult GetCustomerByName(string name)
     {
         var person = _betaMaxDbContext.Set<BetaMaxCustomer>().Where(p => p.Name == name).FirstOrDefault();
 
@@ -24,31 +24,35 @@ public class BetaMaxCustomerController : ControllerBase
     }
 
     [HttpGet("GetAll")]
-    public IActionResult GetAllPersons()
+    public IActionResult GetAllCustomers()
     {
-        var allPersons = _betaMaxDbContext.Persons.ToList();
+        var result = _betaMaxDbContext.Persons.ToList();
 
-        return Ok(allPersons);
+        return Ok(result);
     }
 
     
-    [HttpPost("CreateBlk")]
-    public IActionResult CreateBlkPerson()
+    [HttpPost("CreateDemoCustomer")]
+    public IActionResult CreateDemoCustomer()
     {
+        var customer = new BetaMaxCustomer
+        {
+            Name = "John Doe",
+            Remarks = "Frequent renter",
+            Gender = GenderInfo.Male
+        };
 
-        _betaMaxDbContext.Set<BetaMaxCustomer>().Add(new BetaMaxCustomer { Name = "Bjørn-Lukas", Remarks = "First test for this", Id = Guid.NewGuid() });
-
-
+        _betaMaxDbContext.Set<BetaMaxCustomer>().Add(customer);
         _betaMaxDbContext.SaveChanges();
 
-        return Ok();
+        return Ok(customer);
     }
 
 
     [HttpPost]
-    public IActionResult CreatePerson([FromBody] BetaMaxCustomer person)
+    public IActionResult CreateCustomer([FromBody] BetaMaxCustomer customer)
     {
-        _betaMaxDbContext.Set<BetaMaxCustomer>().Add(person);
+        _betaMaxDbContext.Set<BetaMaxCustomer>().Add(customer);
         _betaMaxDbContext.SaveChanges();
 
         return Ok();
