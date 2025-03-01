@@ -2,7 +2,7 @@
 {
 
 
-    public class BetaMaxCustomer
+    public class Customer
     {      
         //Remark: init could be used in a case where I want to recreate old Customers from an old system. 
         public  Guid Id { get; init; } = Guid.NewGuid();

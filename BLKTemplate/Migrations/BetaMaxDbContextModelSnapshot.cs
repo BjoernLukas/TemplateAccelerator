@@ -22,7 +22,7 @@ namespace BetaMaxRMS.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BetaMaxRMS.Models.BetaMaxCustomer", b =>
+            modelBuilder.Entity("BetaMaxRMS.Models.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace BetaMaxRMS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Persons");
+                    b.ToTable("Customer");
                 });
 
             modelBuilder.Entity("BetaMaxRMS.Models.Movie", b =>
@@ -55,7 +55,7 @@ namespace BetaMaxRMS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Items");
+                    b.ToTable("Movie");
                 });
 #pragma warning restore 612, 618
         }

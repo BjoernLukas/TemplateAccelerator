@@ -12,7 +12,7 @@ namespace BetaMaxRMS.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Items",
+                name: "Movie",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -24,7 +24,7 @@ namespace BetaMaxRMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Persons",
+                name: "Customer",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -42,10 +42,10 @@ namespace BetaMaxRMS.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "Movie");
 
             migrationBuilder.DropTable(
-                name: "Persons");
+                name: "Customer");
         }
     }
 }

@@ -5,44 +5,43 @@ namespace BetaMaxRMS.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BetaMaxCustomerController : ControllerBase
+public class CustomerController : ControllerBase
 {
     private readonly BetaMaxDbContext _betaMaxDbContext;
 
-    public BetaMaxCustomerController(BetaMaxDbContext templateDbContext)
+    public CustomerController(BetaMaxDbContext betaMaxDbContext)
     {
-        _betaMaxDbContext = templateDbContext;
+        _betaMaxDbContext = betaMaxDbContext;
     }
 
 
     [HttpGet(Name = "ByName/{name}")]
     public IActionResult GetCustomerByName(string name)
     {
-        var person = _betaMaxDbContext.Set<BetaMaxCustomer>().Where(p => p.Name == name).FirstOrDefault();
-
-        return person is null ? NotFound() : Ok(person);
+        var customer = _betaMaxDbContext.Set<Customer>().Where(p => p.Name == name).FirstOrDefault();
+        return customer is null ? NotFound() : Ok(customer);
     }
 
     [HttpGet("GetAll")]
     public IActionResult GetAllCustomers()
     {
-        var result = _betaMaxDbContext.Persons.ToList();
+        var result = _betaMaxDbContext.Customer.ToList();
 
         return Ok(result);
     }
 
     
-    [HttpPost("CreateDemoCustomer")]
+    [HttpPost("CreateDemoMovies")]
     public IActionResult CreateDemoCustomer()
     {
-        var customer = new BetaMaxCustomer
+        var customer = new Customer
         {
             Name = "John Doe",
             Remarks = "Frequent renter",
             Gender = GenderInfo.Male
         };
 
-        _betaMaxDbContext.Set<BetaMaxCustomer>().Add(customer);
+        _betaMaxDbContext.Set<Customer>().Add(customer);
         _betaMaxDbContext.SaveChanges();
 
         return Ok(customer);
@@ -50,9 +49,9 @@ public class BetaMaxCustomerController : ControllerBase
 
 
     [HttpPost]
-    public IActionResult CreateCustomer([FromBody] BetaMaxCustomer customer)
+    public IActionResult CreateCustomer([FromBody] Customer customer)
     {
-        _betaMaxDbContext.Set<BetaMaxCustomer>().Add(customer);
+        _betaMaxDbContext.Set<Customer>().Add(customer);
         _betaMaxDbContext.SaveChanges();
 
         return Ok();

@@ -10,6 +10,6 @@ public class BetaMaxDbContext : DbContext
     {
     }
 
-    public DbSet<BetaMaxCustomer> Persons { get; set; }
-    public DbSet<Movie> Items { get; set; }
+    public DbSet<Customer> Customer { get; set; }
+    public DbSet<Movie> Movie { get; set; }
 }
