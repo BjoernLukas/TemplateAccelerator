@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BetaMaxRMS.Migrations
 {
     [DbContext(typeof(BetaMaxDbContext))]
-    [Migration("20250301134915_InitialCreate")]
+    [Migration("20250301225412_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -71,6 +71,9 @@ namespace BetaMaxRMS.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerRelation")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("DaysRented")

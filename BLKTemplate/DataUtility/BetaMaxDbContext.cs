@@ -12,4 +12,6 @@ public class BetaMaxDbContext : DbContext
 
     public DbSet<Customer> Customer { get; set; }
     public DbSet<Movie> Movie { get; set; }
+
+    public DbSet<MovieRental> MovieRental { get; set; }
 }

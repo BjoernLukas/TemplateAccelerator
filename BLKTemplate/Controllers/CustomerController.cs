@@ -29,7 +29,6 @@ public class CustomerController : ControllerBase
         return Ok(result);
     }
 
-
     [HttpGet("GetTotalAmount")]
     public IActionResult GetTotalAmount()
     {
@@ -51,7 +50,7 @@ public class CustomerController : ControllerBase
     {
         var customer = new Customer
         {
-            Name = "John Doe",
+            Name = "John Developer",
             Remarks = "Frequent renter",
             Gender = GenderInfo.Male
         };
@@ -70,6 +69,7 @@ public class CustomerController : ControllerBase
 
         var startRentalTime = new DateTime(2025, 3, 1, 20, 0, 0);
 
+        var allMovieRentals = new List<MovieRental>();
         //Create a movieRental for each movie
         foreach (var movie in movies)
         {
@@ -81,9 +81,12 @@ public class CustomerController : ControllerBase
             };
 
             var handIndTime = CalculateHandInTimeFromMockData(movie.Title, startRentalTime);
-            movieRental.UpdateStatus(handIndTime);
+            movieRental.UpdateWhenHandIn(handIndTime);
+            allMovieRentals.Add(movieRental);
         }
 
+        _betaMaxDbContext.AddRange(allMovieRentals);
+        _betaMaxDbContext.SaveChanges();
 
         return Ok();
     }
@@ -95,7 +98,7 @@ public class CustomerController : ControllerBase
                 { "The Cell", 3 },
                 { "The Tigger Movie", 3 },
                 { "Plan 9 from Outer Space", 1 },
-                { "8½", 2 },
+                { "8 1/2", 2 },
                 { "Eraserhead", 3 }
         };
 
@@ -104,5 +107,12 @@ public class CustomerController : ControllerBase
         var endRentalTime = startRentalTime.AddDays(daysRented);
 
         return endRentalTime;
+    }
+
+    [HttpGet("GetAllMovieRentals")]
+    public IActionResult GetAllMovieRentals()
+    {
+        var movieRentals = _betaMaxDbContext.Set<MovieRental>().ToList();
+        return Ok(movieRentals);
     }
 }

@@ -28,8 +28,11 @@ namespace BetaMaxRMS.BetaMaxModels
 
         public int? DaysRented { get; private set; } //Todo: decide if this should be here or in the service
 
-        public void UpdateStatus(DateTime updateTime)
+        public void UpdateWhenHandIn(DateTime updateTime)
         {
+            DaysRented = (int)(updateTime - Start).TotalDays; //Todo: Improve this with a graze period meaning full days only
+
+
             if (updateTime > DueDate)
             {
                 HandIn = updateTime;
@@ -46,6 +49,7 @@ namespace BetaMaxRMS.BetaMaxModels
                 throw new Exception("Invalid update time");
             }
         }
+           
     }
     public enum RentalStatus
     {

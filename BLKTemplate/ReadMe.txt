@@ -11,3 +11,5 @@ Note Update-Database will also create the database if it does not exist. Usefull
 
 
 3) Build, Run, and go to Swagger UI to test the API's (https://localhost:44349/swagger/index.html)
+
+4) Run endpoints in following order To setUp DemoData: CreateDemoCustomer, CreateDemoMovies, CreateDemoRentalsForAllMovies

@@ -70,6 +70,9 @@ namespace BetaMaxRMS.Migrations
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CustomerRelation")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int?>("DaysRented")
                         .HasColumnType("int");
 

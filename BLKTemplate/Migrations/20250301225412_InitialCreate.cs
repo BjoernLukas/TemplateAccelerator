@@ -44,6 +44,7 @@ namespace BetaMaxRMS.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MovieRelation = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerRelation = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Start = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HandIn = table.Column<DateTime>(type: "datetime2", nullable: true),
