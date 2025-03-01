@@ -6,7 +6,10 @@
 
         public required string Title { get; set; }  //Improvement: Title's can vary based on countries, make TitleInfo Class?
 
-        public required PriceCode PriceCode { get; set; }                
+        public required PriceCode PriceCode { get; set; }  
+        
+
+
 
     }
 }

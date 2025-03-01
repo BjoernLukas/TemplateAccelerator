@@ -14,7 +14,6 @@ public class CustomerController : ControllerBase
         _betaMaxDbContext = betaMaxDbContext;
     }
 
-
     [HttpGet("ByName/{name}")]
     public IActionResult GetCustomerByName(string name)
     {
@@ -30,7 +29,23 @@ public class CustomerController : ControllerBase
         return Ok(result);
     }
 
-    
+
+    [HttpGet("GetTotalAmount")]
+    public IActionResult GetTotalAmount()
+    {
+
+
+        return Ok();
+    }
+
+    [HttpGet("GetFrequentRenterPoints")]
+    public IActionResult GetFrequentRenterPoints()
+    {
+
+
+        return Ok();
+    }
+
     [HttpPost("CreateDemoCustomer")]
     public IActionResult CreateDemoCustomer()
     {
@@ -47,17 +62,47 @@ public class CustomerController : ControllerBase
         return Ok(customer);
     }
 
-
-    [HttpPost]
-    public IActionResult CreateCustomer([FromBody] Customer customer)
+    [HttpPost("CreateDemoRentalsForAllMovies")]
+    public IActionResult CreateDemoRentalsForAllMovies()
     {
-        _betaMaxDbContext.Set<Customer>().Add(customer);
-        _betaMaxDbContext.SaveChanges();
+        var customer = _betaMaxDbContext.Set<Customer>().First();
+        var movies = _betaMaxDbContext.Set<Movie>().ToList();
+
+        var startRentalTime = new DateTime(2025, 3, 1, 20, 0, 0);
+
+        //Create a movieRental for each movie
+        foreach (var movie in movies)
+        {
+            var movieRental = new MovieRental
+            {
+                MovieRelation = movie.Id,
+                CustomerRelation = customer.Id,
+                Start = startRentalTime
+            };
+
+            var handIndTime = CalculateHandInTimeFromMockData(movie.Title, startRentalTime);
+            movieRental.UpdateStatus(handIndTime);
+        }
+
 
         return Ok();
     }
 
+    private DateTime CalculateHandInTimeFromMockData(string title, DateTime startRentalTime)
+    {
+        var rentalData = new Dictionary<string, int>
+        {
+                { "The Cell", 3 },
+                { "The Tigger Movie", 3 },
+                { "Plan 9 from Outer Space", 1 },
+                { "8½", 2 },
+                { "Eraserhead", 3 }
+        };
 
+        var daysRented = rentalData.ContainsKey(title) ? rentalData[title] : throw new Exception("No mock data for this movie");
 
+        var endRentalTime = startRentalTime.AddDays(daysRented);
 
+        return endRentalTime;
+    }
 }
