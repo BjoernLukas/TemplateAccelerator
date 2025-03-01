@@ -14,8 +14,9 @@ public class MovieController : ControllerBase
     {
         _betaMaxDbContext = betaMaxDbContext;
     }
+    
 
-    [HttpGet(Name = "ByName/{name}")]
+    [HttpGet("ByTitle/{searchTitle}")]
     public IActionResult GetMovieByTitle(string searchTitle)
     {
         var movie = _betaMaxDbContext.Set<Movie>().Where(p => p.Title == searchTitle).FirstOrDefault();

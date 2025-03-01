@@ -15,7 +15,7 @@ public class CustomerController : ControllerBase
     }
 
 
-    [HttpGet(Name = "ByName/{name}")]
+    [HttpGet("ByName/{name}")]
     public IActionResult GetCustomerByName(string name)
     {
         var customer = _betaMaxDbContext.Set<Customer>().Where(p => p.Name == name).FirstOrDefault();
@@ -31,7 +31,7 @@ public class CustomerController : ControllerBase
     }
 
     
-    [HttpPost("CreateDemoMovies")]
+    [HttpPost("CreateDemoCustomer")]
     public IActionResult CreateDemoCustomer()
     {
         var customer = new Customer
