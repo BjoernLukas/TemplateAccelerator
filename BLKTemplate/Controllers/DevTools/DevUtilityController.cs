@@ -81,11 +81,10 @@ public class DevUtilityController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("GetStatementLegacy")]
-    public IActionResult GetStatementLegacy()
+    [HttpGet("GetStatement")]
+    public IActionResult GetStatement()
     {
-       var result = _movieRentalCalculationService.GetStatementLegacy();
-
+        var result = _movieRentalCalculationService.GetStatementLegacy();
 
         return Ok(result);
     }
