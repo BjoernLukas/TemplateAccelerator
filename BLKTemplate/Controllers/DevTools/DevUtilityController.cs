@@ -1,48 +1,38 @@
 ﻿using BetaMaxRMS.BetaMaxModels;
 using BetaMaxRMS.DataUtility;
+using BetaMaxRMS.Services;
 using Microsoft.AspNetCore.Mvc;
-namespace BetaMaxRMS.Controllers;
+namespace BetaMaxRMS.Controllers.DevTools;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CustomerController : ControllerBase
+public class DevUtilityController : ControllerBase
 {
     private readonly BetaMaxDbContext _betaMaxDbContext;
+    private readonly IMovieRentalCalculationService _movieRentalCalculationService;
 
-    public CustomerController(BetaMaxDbContext betaMaxDbContext)
+    public DevUtilityController(BetaMaxDbContext betaMaxDbContext, IMovieRentalCalculationService movieRentalCalculationService)
     {
         _betaMaxDbContext = betaMaxDbContext;
+        _movieRentalCalculationService = movieRentalCalculationService;
     }
 
-    [HttpGet("ByName/{name}")]
-    public IActionResult GetCustomerByName(string name)
+    [HttpPost("CreateDemoMovies")]
+    public IActionResult CreateDemoMovies()
     {
-        var customer = _betaMaxDbContext.Set<Customer>().Where(p => p.Name == name).FirstOrDefault();
-        return customer is null ? NotFound() : Ok(customer);
-    }
+        var movies = new List<Movie>
+        {
+            new() { Title = "The Cell", PriceCode = PriceCode.NewRelease },
+            new() { Title = "The Tigger Movie", PriceCode = PriceCode.Childrens },
+            new() { Title = "Plan 9 from Outer Space", PriceCode = PriceCode.Regular },
+            new() { Title = "8 1/2", PriceCode = PriceCode.Regular },
+            new() { Title = "Eraserhead", PriceCode = PriceCode.Regular }
+        };
 
-    [HttpGet("GetAll")]
-    public IActionResult GetAllCustomers()
-    {
-        var result = _betaMaxDbContext.Customer.ToList();
+        _betaMaxDbContext.AddRange(movies);
+        _betaMaxDbContext.SaveChanges();
 
-        return Ok(result);
-    }
-
-    [HttpGet("GetTotalAmount")]
-    public IActionResult GetTotalAmount()
-    {
-
-
-        return Ok();
-    }
-
-    [HttpGet("GetFrequentRenterPoints")]
-    public IActionResult GetFrequentRenterPoints()
-    {
-
-
-        return Ok();
+        return Ok("Demo Movies created");
     }
 
     [HttpPost("CreateDemoCustomer")]
@@ -80,7 +70,7 @@ public class CustomerController : ControllerBase
                 Start = startRentalTime
             };
 
-            var handIndTime = CalculateHandInTimeFromMockData(movie.Title, startRentalTime);
+            var handIndTime = SimulateHandInTimeFromMockData(movie.Title, startRentalTime);
             movieRental.UpdateWhenHandIn(handIndTime);
             allMovieRentals.Add(movieRental);
         }
@@ -91,7 +81,16 @@ public class CustomerController : ControllerBase
         return Ok();
     }
 
-    private DateTime CalculateHandInTimeFromMockData(string title, DateTime startRentalTime)
+    [HttpGet("GetStatementLegacy")]
+    public IActionResult GetStatementLegacy()
+    {
+       var result = _movieRentalCalculationService.GetStatementLegacy();
+
+
+        return Ok(result);
+    }
+
+    private DateTime SimulateHandInTimeFromMockData(string title, DateTime startRentalTime)
     {
         var rentalData = new Dictionary<string, int>
         {
@@ -109,10 +108,5 @@ public class CustomerController : ControllerBase
         return endRentalTime;
     }
 
-    [HttpGet("GetAllMovieRentals")]
-    public IActionResult GetAllMovieRentals()
-    {
-        var movieRentals = _betaMaxDbContext.Set<MovieRental>().ToList();
-        return Ok(movieRentals);
-    }
+
 }
