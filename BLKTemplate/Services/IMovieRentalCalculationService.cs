@@ -6,6 +6,6 @@ namespace BetaMaxRMS.Services
     {
         //This is a recreation of the legacy code.
         [Obsolete("Only use for local development")]
-        string GetStatementLegacy(string customerName, IList<MovieRental> rentals);
+        string GetStatementLegacy();
     }
 }
