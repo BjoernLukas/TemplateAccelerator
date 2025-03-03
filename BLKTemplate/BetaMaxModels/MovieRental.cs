@@ -49,7 +49,14 @@ namespace BetaMaxRMS.BetaMaxModels
                 throw new Exception("Invalid update time");
             }
         }
-           
+
+        //New fields for the this price 2.0 iteration
+        public decimal BasePriceAmount { get; set; }
+
+        public int NumberOfZeroCostDays { get; set; }
+
+        public decimal PriceAmountPerDay { get; set; }
+
     }
     public enum RentalStatus
     {

@@ -40,6 +40,7 @@ public class DevUtilityController : ControllerBase
     {
         var customer = new Customer
         {
+            Id = Guid.Parse("265f9212-67e1-4dda-b601-0be5b0164c06"),
             Name = "John Developer",
             Remarks = "Frequent renter",
             Gender = GenderInfo.Male
@@ -56,13 +57,12 @@ public class DevUtilityController : ControllerBase
     {
         var customer = _betaMaxDbContext.Set<Customer>().First();
         var movies = _betaMaxDbContext.Set<Movie>().ToList();
-
         var startRentalTime = new DateTime(2025, 3, 1, 20, 0, 0);
 
         var allMovieRentals = new List<MovieRental>();
         //Create a movieRental for each movie
         foreach (var movie in movies)
-        {
+        {         
             var movieRental = new MovieRental
             {
                 MovieRelation = movie.Id,
@@ -72,15 +72,43 @@ public class DevUtilityController : ControllerBase
 
             var handIndTime = SimulateHandInTimeFromMockData(movie.Title, startRentalTime);
             movieRental.UpdateWhenHandIn(handIndTime);
+
+            //Add new price 2.0 iteration info to each movieRental
+            //Todo: for next iteration this should be solved more elegantly
+            switch (movie.PriceCode)
+            {
+                case PriceCode.Regular:
+                    movieRental.BasePriceAmount = 2;
+                    movieRental.NumberOfZeroCostDays = 2;
+                    movieRental.PriceAmountPerDay = 1.5m;
+                    break;
+                case PriceCode.NewRelease:
+                    movieRental.BasePriceAmount = 0;
+                    movieRental.NumberOfZeroCostDays = 0;
+                    movieRental.PriceAmountPerDay = 3;
+                    break;
+                case PriceCode.Childrens:
+                    movieRental.BasePriceAmount = 1.5m;
+                    movieRental.NumberOfZeroCostDays = 3;
+                    movieRental.PriceAmountPerDay = 1.5m;
+                    break;
+               
+            }
+
+
+            //Final step
             allMovieRentals.Add(movieRental);
         }
 
-        _betaMaxDbContext.AddRange(allMovieRentals);
+        _betaMaxDbContext.AddRange(allMovieRentals);       
+
+
         _betaMaxDbContext.SaveChanges();
 
         return Ok();
     }
 
+    [Obsolete("OldCode")]
     [HttpGet("GetStatement")]
     public IActionResult GetStatement()
     {
@@ -88,6 +116,28 @@ public class DevUtilityController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("NewCode_GetTotalAmount")]
+    public IActionResult GetTotalAmount()
+    {
+        //Id for John Developer
+        var result = _movieRentalCalculationService.GetTotalAmountForCustomer(Guid.Parse("265f9212-67e1-4dda-b601-0be5b0164c06"));
+
+
+        return Ok(result);
+    }
+
+    [HttpGet("NewCode_GetFrequentRenterPoints")]
+    public IActionResult GetFrequentRenterPoints()
+    {
+
+
+        return Ok();
+    }
+
+    
+
+
 
     private DateTime SimulateHandInTimeFromMockData(string title, DateTime startRentalTime)
     {
@@ -106,6 +156,7 @@ public class DevUtilityController : ControllerBase
 
         return endRentalTime;
     }
+
 
 
 }

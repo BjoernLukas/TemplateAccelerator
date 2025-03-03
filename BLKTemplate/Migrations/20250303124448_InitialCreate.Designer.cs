@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BetaMaxRMS.Migrations
 {
     [DbContext(typeof(BetaMaxDbContext))]
-    [Migration("20250301225412_InitialCreate")]
+    [Migration("20250303124448_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -70,6 +70,9 @@ namespace BetaMaxRMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("BasePriceAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
@@ -87,6 +90,12 @@ namespace BetaMaxRMS.Migrations
 
                     b.Property<Guid>("MovieRelation")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("NumberOfZeroCostDays")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PriceAmountPerDay")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");

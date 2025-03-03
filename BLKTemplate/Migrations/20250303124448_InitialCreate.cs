@@ -50,6 +50,9 @@ namespace BetaMaxRMS.Migrations
                     HandIn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     DaysRented = table.Column<int>(type: "int", nullable: true),
+                    BasePriceAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    NumberOfZeroCostDays = table.Column<int>(type: "int", nullable: false),
+                    PriceAmountPerDay = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>

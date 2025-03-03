@@ -4,7 +4,13 @@ namespace BetaMaxRMS.Services
 {
     public interface IMovieRentalCalculationService
     {
-        string GetStatementLegacy();
+        [Obsolete("Only use for development")]
+        public string GetStatementLegacy();
+
+        public decimal GetTotalAmountForCustomer(Guid customerId);
+
+
+        public Movie GetMovieByRentalId(Guid MovieRelationId);
 
 
     }

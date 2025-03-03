@@ -67,6 +67,9 @@ namespace BetaMaxRMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("BasePriceAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
@@ -84,6 +87,12 @@ namespace BetaMaxRMS.Migrations
 
                     b.Property<Guid>("MovieRelation")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("NumberOfZeroCostDays")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PriceAmountPerDay")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");

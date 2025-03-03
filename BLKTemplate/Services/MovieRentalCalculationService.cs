@@ -41,7 +41,7 @@ namespace BetaMaxRMS.Services
                 //***For testing only create units tests for this
                 //if (currentMovie.Title != "Plan 9 from Outer Space" && currentMovie.Title != "8 1/2" && currentMovie.Title != "Eraserhead")
                 //{ continue; }
-              
+
 
                 //original Comment: determines the amount for currentMovieRental line
                 //Change the switch, but it still switches on each eachMovieRentals priceCode  
@@ -70,9 +70,9 @@ namespace BetaMaxRMS.Services
                         && currentMovieRental.DaysRented > 1)
                     frequentRenterPoints++;
 
-                result += "\t" + currentMovie.Title + "\t"
-                    + thisAmount + "\n";
+                result += "\t" + currentMovie.Title + "\t" + thisAmount + "\n";
                 totalAmount += thisAmount;
+
 
             }
 
@@ -83,32 +83,60 @@ namespace BetaMaxRMS.Services
         }
 
         //Discussion: Should this be part of a repository service?
-        private Movie GetMovieByRentalId(Guid MovieRelationId)
+        public Movie GetMovieByRentalId(Guid MovieRelationId)
         {
 
             var MovieRelation = _betaMaxDbContext.Set<MovieRental>().SingleOrDefault(rental => rental.MovieRelation == MovieRelationId)?.MovieRelation
                  ?? throw new Exception("No MovieRelation found");
 
             var movie = _betaMaxDbContext.Set<Movie>().SingleOrDefault(p => p.Id == MovieRelation)
-                ?? throw new Exception("No movie found");
+                ?? throw new Exception("No currentMovie found");
 
             return movie;
         }
 
 
-        public void GetTotalAmount()
+        public decimal GetTotalAmountForCustomer(Guid customerId)
         {
 
-
-            //Change from double to decimal. 
-            //Double is best for artefacts of nature which can't really be measured exactly.
-            decimal totalAmount = 0;
+            //Get all currentMovie rentals for the customer
+            var movieRentals = _betaMaxDbContext.MovieRental.Where(p => p.CustomerRelation == customerId).ToList();
 
 
+            //Change from double to decimal. -- Double is best for artefacts of nature which can't really be measured exactly.
+            var totalPriceAmount = 0m;
 
+            foreach (var currentMovieRental in movieRentals)
+            {
+                var currentMovie = GetMovieByRentalId(currentMovieRental.MovieRelation);
+                var basePriceAmount = 0m;
 
-            throw new NotImplementedException();
+                switch (currentMovie.PriceCode)
+                {
+                    case PriceCode.Regular:
+                        basePriceAmount += 2;
+                        if (currentMovieRental.DaysRented > 2)
+                        {
+                            basePriceAmount += (decimal)((currentMovieRental.DaysRented - 2) * 1.5);
+                        }
+                        break;
+                    case PriceCode.NewRelease:
+                        basePriceAmount += (decimal)(currentMovieRental.DaysRented * 3);
+                        break;
+                    case PriceCode.Childrens:
+                        basePriceAmount += (decimal)1.5;
+                        if (currentMovieRental.DaysRented > 3)
+                        {
+                            basePriceAmount += (decimal)((currentMovieRental.DaysRented - 3) * 1.5);
+                        }
+                        break;
+                }
 
+                totalPriceAmount += basePriceAmount;
+
+            }
+
+            return totalPriceAmount;
         }
 
         public void GetFrequentRenterPoints()
