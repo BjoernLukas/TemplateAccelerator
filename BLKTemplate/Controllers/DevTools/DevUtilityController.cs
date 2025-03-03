@@ -62,7 +62,7 @@ public class DevUtilityController : ControllerBase
         var allMovieRentals = new List<MovieRental>();
         //Create a movieRental for each movie
         foreach (var movie in movies)
-        {         
+        {
             var movieRental = new MovieRental
             {
                 MovieRelation = movie.Id,
@@ -92,17 +92,13 @@ public class DevUtilityController : ControllerBase
                     movieRental.NumberOfZeroCostDays = 3;
                     movieRental.PriceAmountPerDay = 1.5m;
                     break;
-               
             }
 
-
-            //Final step
             allMovieRentals.Add(movieRental);
         }
 
+        //Final step
         _betaMaxDbContext.AddRange(allMovieRentals);       
-
-
         _betaMaxDbContext.SaveChanges();
 
         return Ok();
@@ -117,11 +113,22 @@ public class DevUtilityController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("NewCode_GetTotalAmount")]
-    public IActionResult GetTotalAmount()
+    [Obsolete("OldCode")]
+    [HttpGet("GetTotalAmountV1")]
+    public IActionResult GetTotalAmountV1()
     {
         //Id for John Developer
-        var result = _movieRentalCalculationService.GetTotalAmountForCustomer(Guid.Parse("265f9212-67e1-4dda-b601-0be5b0164c06"));
+        var result = _movieRentalCalculationService.GetTotalAmountForCustomerV1(Guid.Parse("265f9212-67e1-4dda-b601-0be5b0164c06"));
+
+
+        return Ok(result);
+    }
+    
+    [HttpGet("GetTotalAmountV2")]
+    public IActionResult GetTotalAmountV2()
+    {
+        //Id for John Developer
+        var result = _movieRentalCalculationService.GetTotalAmountForCustomerV2(Guid.Parse("265f9212-67e1-4dda-b601-0be5b0164c06"));
 
 
         return Ok(result);
@@ -134,10 +141,7 @@ public class DevUtilityController : ControllerBase
 
         return Ok();
     }
-
     
-
-
 
     private DateTime SimulateHandInTimeFromMockData(string title, DateTime startRentalTime)
     {

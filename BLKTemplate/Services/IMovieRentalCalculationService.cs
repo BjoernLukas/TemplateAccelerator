@@ -7,10 +7,10 @@ namespace BetaMaxRMS.Services
         [Obsolete("Only use for development")]
         public string GetStatementLegacy();
 
-        public decimal GetTotalAmountForCustomer(Guid customerId);
+        [Obsolete("Use v2")]
+        public decimal GetTotalAmountForCustomerV1(Guid customerId);
 
-
-        public Movie GetMovieByRentalId(Guid MovieRelationId);
+        public decimal GetTotalAmountForCustomerV2(Guid customerId);
 
 
     }

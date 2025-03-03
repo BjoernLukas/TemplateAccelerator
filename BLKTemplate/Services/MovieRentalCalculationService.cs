@@ -82,26 +82,12 @@ namespace BetaMaxRMS.Services
             return result;
         }
 
-        //Discussion: Should this be part of a repository service?
-        public Movie GetMovieByRentalId(Guid MovieRelationId)
-        {
-
-            var MovieRelation = _betaMaxDbContext.Set<MovieRental>().SingleOrDefault(rental => rental.MovieRelation == MovieRelationId)?.MovieRelation
-                 ?? throw new Exception("No MovieRelation found");
-
-            var movie = _betaMaxDbContext.Set<Movie>().SingleOrDefault(p => p.Id == MovieRelation)
-                ?? throw new Exception("No currentMovie found");
-
-            return movie;
-        }
-
-
-        public decimal GetTotalAmountForCustomer(Guid customerId)
+        [Obsolete("See v2")]
+        public decimal GetTotalAmountForCustomerV1(Guid customerId)
         {
 
             //Get all currentMovie rentals for the customer
             var movieRentals = _betaMaxDbContext.MovieRental.Where(p => p.CustomerRelation == customerId).ToList();
-
 
             //Change from double to decimal. -- Double is best for artefacts of nature which can't really be measured exactly.
             var totalPriceAmount = 0m;
@@ -139,6 +125,36 @@ namespace BetaMaxRMS.Services
             return totalPriceAmount;
         }
 
+        public decimal GetTotalAmountForCustomerV2(Guid customerId)
+        {
+
+            //Get all currentMovie rentals for the customer
+            var movieRentals = _betaMaxDbContext.MovieRental.Where(p => p.CustomerRelation == customerId).ToList();
+
+            //Change from double to decimal. -- Double is best for artefacts of nature which can't really be measured exactly.
+            var priceAmountForAllRentals = 0m;
+
+            foreach (var currentMovieRental in movieRentals)
+            {
+                var currentMovie = GetMovieByRentalId(currentMovieRental.MovieRelation);
+                
+                var currentPriceAmount = 0m;
+                var daysAboveZeroCost = currentMovieRental.DaysRented - currentMovieRental.NumberOfZeroCostDays;
+
+                //Step 1 add price for days rented above zero-cost-days
+                if (currentMovieRental.DaysRented > currentMovieRental.NumberOfZeroCostDays)
+                { currentPriceAmount += currentMovieRental.PriceAmountPerDay * daysAboveZeroCost.Value; }
+
+                //Step 2 add base price if any
+                currentPriceAmount += currentMovieRental.BasePriceAmount;
+
+                //Step 3 add to running total
+                priceAmountForAllRentals += currentPriceAmount;
+            }
+
+            return priceAmountForAllRentals;
+        }
+
         public void GetFrequentRenterPoints()
         {
             throw new NotImplementedException();
@@ -150,5 +166,17 @@ namespace BetaMaxRMS.Services
             throw new NotImplementedException();
         }
 
+        //Discussion: Should this be part of a repository service?
+        private Movie GetMovieByRentalId(Guid MovieRelationId)
+        {
+
+            var MovieRelation = _betaMaxDbContext.Set<MovieRental>().SingleOrDefault(rental => rental.MovieRelation == MovieRelationId)?.MovieRelation
+                 ?? throw new Exception("No MovieRelation found");
+
+            var movie = _betaMaxDbContext.Set<Movie>().SingleOrDefault(p => p.Id == MovieRelation)
+                ?? throw new Exception("No currentMovie found");
+
+            return movie;
+        }
     }
 }

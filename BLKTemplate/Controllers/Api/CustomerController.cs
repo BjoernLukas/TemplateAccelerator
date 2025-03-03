@@ -29,7 +29,7 @@ public class CustomerController : ControllerBase
         return Ok(result);
     }
 
-    //Endpoints for: GetTotalAmountForCustomer and GetFrequentRenterPoints, could be added here in the future. 
+    //Endpoints for: GetTotalAmountForCustomerV1 and GetFrequentRenterPoints, could be added here in the future. 
 
     //Todo: this could be moved to a separate controller
     [HttpGet("GetAllMovieRentals")]
