@@ -1,5 +1,6 @@
 ﻿using BetaMaxRMS.BetaMaxModels;
 using BetaMaxRMS.DataUtility;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Collections;
 
 namespace BetaMaxRMS.Services
@@ -20,9 +21,11 @@ namespace BetaMaxRMS.Services
         public string GetStatementLegacy()
         {
             //SetUp to run original code
-            var customerName = "Joe";
+            var customerName = "Fred";
             var movieRentals = _betaMaxDbContext.MovieRental.Where(p => p.DaysRented != null).ToList();
-                     
+
+
+
 
             //****As close as possible to original code, 
             double totalAmount = 0;
@@ -35,6 +38,10 @@ namespace BetaMaxRMS.Services
                 var currentMovieRental = (MovieRental)movieRentals[i];
                 var currentMovie = GetMovieByRentalId(currentMovieRental.MovieRelation);
 
+                //***For testing only create units tests for this
+                //if (currentMovie.Title != "Plan 9 from Outer Space" && currentMovie.Title != "8 1/2" && currentMovie.Title != "Eraserhead")
+                //{ continue; }
+              
 
                 //original Comment: determines the amount for currentMovieRental line
                 //Change the switch, but it still switches on each eachMovieRentals priceCode  
@@ -43,7 +50,7 @@ namespace BetaMaxRMS.Services
                     case PriceCode.Regular:
                         thisAmount += 2;
                         if (currentMovieRental.DaysRented > 2)
-                            thisAmount += (double)((currentMovieRental.DaysRented - 2) * 1.5); //WARNING: check if precision is lost when casting.
+                            thisAmount += (double)((currentMovieRental.DaysRented - 2) * 1.5); //Todo: Check if precision is lost when casting.. its ok but the the other way around 
                         break;
 
                     case PriceCode.NewRelease:
@@ -76,12 +83,13 @@ namespace BetaMaxRMS.Services
         }
 
         //Discussion: Should this be part of a repository service?
-        private Movie GetMovieByRentalId(Guid RentalId)
+        private Movie GetMovieByRentalId(Guid MovieRelationId)
         {
-            var MovieRelationId = (_betaMaxDbContext.Set<MovieRental>().SingleOrDefault(rental => rental.Id == RentalId)?.MovieRelation)
-                ?? throw new Exception("No MovieRental found");
 
-            var movie = _betaMaxDbContext.Set<Movie>().SingleOrDefault(p => p.Id == MovieRelationId)
+            var MovieRelation = _betaMaxDbContext.Set<MovieRental>().SingleOrDefault(rental => rental.MovieRelation == MovieRelationId)?.MovieRelation
+                 ?? throw new Exception("No MovieRelation found");
+
+            var movie = _betaMaxDbContext.Set<Movie>().SingleOrDefault(p => p.Id == MovieRelation)
                 ?? throw new Exception("No movie found");
 
             return movie;
