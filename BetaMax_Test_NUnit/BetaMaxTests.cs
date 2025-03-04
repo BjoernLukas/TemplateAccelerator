@@ -7,6 +7,7 @@ using NUnit.Framework;
 namespace BetaMax_Test_NUnit
 {
     [TestFixture]
+    [Obsolete("See TestV2")] //This test strategy was a dead end
     public class BetaMaxTests
     {
         private Customer _customer;
