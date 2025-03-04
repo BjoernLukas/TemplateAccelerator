@@ -26,7 +26,7 @@ namespace BetaMaxRMS.BetaMaxModels
 
         public RentalStatus Status { get; private set; } = RentalStatus.Rented;
 
-        public int? DaysRented { get; private set; } //Todo: decide if this should be here or in the service
+        public int? DaysRented { get; private set; } 
 
         public void UpdateWhenHandIn(DateTime updateTime)
         {

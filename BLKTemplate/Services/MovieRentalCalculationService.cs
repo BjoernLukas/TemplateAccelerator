@@ -43,7 +43,7 @@ namespace BetaMaxRMS.Services
                 //{ continue; }
 
 
-                //original Comment: determines the amount for currentMovieRental line
+                //original Comment: determines the amount for rental line
                 //Change the switch, but it still switches on each eachMovieRentals priceCode  
                 switch (currentMovie.PriceCode)
                 {
@@ -129,24 +129,25 @@ namespace BetaMaxRMS.Services
         {
 
             //Get all currentMovie rentals for the customer
-            var movieRentals = _betaMaxDbContext.MovieRental.Where(p => p.CustomerRelation == customerId).ToList();
+            var movieRentals = _betaMaxDbContext.MovieRental.Where(x => x.CustomerRelation == customerId && x.DaysRented != null).ToList();
 
             //Change from double to decimal. -- Double is best for artefacts of nature which can't really be measured exactly.
             var priceAmountForAllRentals = 0m;
 
-            foreach (var currentMovieRental in movieRentals)
+            foreach (var rental in movieRentals)
             {
-                var currentMovie = GetMovieByRentalId(currentMovieRental.MovieRelation);
+                var currentMovie = GetMovieByRentalId(rental.MovieRelation);
+                var currentPriceAmount = 0m;           
+               
+                var daysAboveZeroCost = rental.DaysRented - rental.NumberOfZeroCostDays;
                 
-                var currentPriceAmount = 0m;
-                var daysAboveZeroCost = currentMovieRental.DaysRented - currentMovieRental.NumberOfZeroCostDays;
 
                 //Step 1 add price for days rented above zero-cost-days
-                if (currentMovieRental.DaysRented > currentMovieRental.NumberOfZeroCostDays)
-                { currentPriceAmount += currentMovieRental.PriceAmountPerDay * daysAboveZeroCost.Value; }
+                if (rental.DaysRented > rental.NumberOfZeroCostDays)
+                { currentPriceAmount += rental.PriceAmountPerDay * daysAboveZeroCost.Value; }
 
                 //Step 2 add base price if any
-                currentPriceAmount += currentMovieRental.BasePriceAmount;
+                currentPriceAmount += rental.BasePriceAmount;
 
                 //Step 3 add to running total
                 priceAmountForAllRentals += currentPriceAmount;
