@@ -14,6 +14,10 @@ namespace BetaMaxRMS.Services
             _betaMaxDbContext = betaMaxDbContext;
         }
 
+        public MovieRentalCalculationService()
+        {
+        }
+
 
         //This is a recreation of the legacy code.
         //Remark: Some of variables names have been changed from legacy to make it more readable
