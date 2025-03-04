@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35309.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetaMaxRMS", "BLKTemplate\BetaMaxRMS.csproj", "{094A2D95-BECF-47C0-AC1C-134C12FB0EC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetaMax_Test_NUnit", "BetaMax_Test_NUnit\BetaMax_Test_NUnit.csproj", "{C0672550-FF07-445D-A597-EDEF546FF000}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{094A2D95-BECF-47C0-AC1C-134C12FB0EC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{094A2D95-BECF-47C0-AC1C-134C12FB0EC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{094A2D95-BECF-47C0-AC1C-134C12FB0EC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0672550-FF07-445D-A597-EDEF546FF000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0672550-FF07-445D-A597-EDEF546FF000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0672550-FF07-445D-A597-EDEF546FF000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0672550-FF07-445D-A597-EDEF546FF000}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

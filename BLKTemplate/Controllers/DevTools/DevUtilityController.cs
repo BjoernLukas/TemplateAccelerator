@@ -70,7 +70,7 @@ public class DevUtilityController : ControllerBase
                 Start = startRentalTime
             };
 
-            var handIndTime = SimulateHandInTimeFromMockData(movie.Title, startRentalTime);
+            var handIndTime = SimulateHandInTimeMockData(movie.Title, startRentalTime);
             movieRental.UpdateWhenHandIn(handIndTime);
 
             //Add new price 2.0 iteration info to each movieRental
@@ -143,7 +143,7 @@ public class DevUtilityController : ControllerBase
     }
     
 
-    private DateTime SimulateHandInTimeFromMockData(string title, DateTime startRentalTime)
+    private static DateTime SimulateHandInTimeMockData(string title, DateTime startRentalTime)
     {
         var rentalData = new Dictionary<string, int>
         {
