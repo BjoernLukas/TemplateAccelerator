@@ -160,8 +160,11 @@ namespace BetaMaxRMS.Services
         }
 
         /// <summary>
-        /// This is the new version of the code, for FrequentRenterPoints. 
-        /// </summary>        
+        /// This is the new version of the code, for FrequentRenterPoints.
+        /// </summary>
+        /// <remarks>
+        /// Simple business logic, but tried to make it as efficient as possible, was considering ToArray but apparently that only ~ 4% faster on large collections. 
+        /// </remarks>
         public int GetFrequentRenterPoints(Guid customerId)
         {
             var numberOfMovieRentals = _betaMaxDbContext.MovieRental.Where(x => x.CustomerRelation == customerId && x.DaysRented != null)
@@ -173,9 +176,14 @@ namespace BetaMaxRMS.Services
             return numberOfMovieRentals + numberOfNewReleases;
         }
 
-        //Remark: discuss the team, if this is needed and if this should be a part of MovieRentalCalculationService
+        /// <summary>
+        /// Discuss the team, if this is needed and if this should be a part of MovieRentalCalculationService
+        /// </summary>
+        /// <remarks></remarks>        
         public string CreatePrettyPrint()
         {
+            //If doing this use string interpolation ($"Rental Record for {name}\n") instead of concatenation
+
             throw new NotImplementedException();
         }
 
