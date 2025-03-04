@@ -6,6 +6,7 @@ How to start this project:
 2) open Package Manager Console and run the following command
 --> Add-Migration InitialCreate
 -->	Update-Database
+
 2.1) Delete old Migrations folder if there is any.
 Note Update-Database will also create the database if it does not exist. Usefull when docker container/volume have been wiped.
 
