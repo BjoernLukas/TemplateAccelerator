@@ -17,7 +17,7 @@ public class DevUtilityController : ControllerBase
         _movieRentalCalculationService = movieRentalCalculationService;
     }
 
-    [HttpPost("CreateDemoMovies")]
+    [HttpPost("2_CreateDemoMovies")]
     public IActionResult CreateDemoMovies()
     {
         var movies = new List<Movie>
@@ -35,7 +35,7 @@ public class DevUtilityController : ControllerBase
         return Ok("Demo Movies created");
     }
 
-    [HttpPost("CreateDemoCustomer")]
+    [HttpPost("1_CreateDemoCustomer")]
     public IActionResult CreateDemoCustomer()
     {
         var customer = new Customer
@@ -52,7 +52,7 @@ public class DevUtilityController : ControllerBase
         return Ok(customer);
     }
 
-    [HttpPost("CreateDemoRentalsForAllMovies")]
+    [HttpPost("3_CreateDemoRentalsForAllMovies")]
     public IActionResult CreateDemoRentalsForAllMovies()
     {
         var customer = _betaMaxDbContext.Set<Customer>().First();
@@ -134,12 +134,12 @@ public class DevUtilityController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("NewCode_GetFrequentRenterPoints")]
+    [HttpGet("GetFrequentRenterPoints")]
     public IActionResult GetFrequentRenterPoints()
     {
+        var frequentRenterPoints = _movieRentalCalculationService.GetFrequentRenterPoints(Guid.Parse("265f9212-67e1-4dda-b601-0be5b0164c06"));
 
-
-        return Ok();
+        return Ok(frequentRenterPoints);
     }
     
 

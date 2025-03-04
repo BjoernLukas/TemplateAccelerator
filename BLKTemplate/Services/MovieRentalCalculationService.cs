@@ -125,6 +125,9 @@ namespace BetaMaxRMS.Services
             return totalPriceAmount;
         }
 
+        /// <summary>
+        /// This is the new version of the code. Which is more readable and maintainable.
+        /// </summary>       
         public decimal GetTotalAmountForCustomerV2(Guid customerId)
         {
 
@@ -156,9 +159,18 @@ namespace BetaMaxRMS.Services
             return priceAmountForAllRentals;
         }
 
-        public void GetFrequentRenterPoints()
+        /// <summary>
+        /// This is the new version of the code, for FrequentRenterPoints. 
+        /// </summary>        
+        public int GetFrequentRenterPoints(Guid customerId)
         {
-            throw new NotImplementedException();
+            var numberOfMovieRentals = _betaMaxDbContext.MovieRental.Where(x => x.CustomerRelation == customerId && x.DaysRented != null)
+                .ToList().Count;
+            var numberOfNewReleases = _betaMaxDbContext.MovieRental.Where(x => x.CustomerRelation == customerId && x.DaysRented != null)
+                .ToList().Count(x => GetMovieByRentalId(x.MovieRelation).PriceCode == PriceCode.NewRelease);
+
+
+            return numberOfMovieRentals + numberOfNewReleases;
         }
 
         //Remark: discuss the team, if this is needed and if this should be a part of MovieRentalCalculationService

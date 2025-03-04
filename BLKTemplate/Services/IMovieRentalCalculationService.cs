@@ -12,6 +12,8 @@ namespace BetaMaxRMS.Services
 
         public decimal GetTotalAmountForCustomerV2(Guid customerId);
 
+        public int GetFrequentRenterPoints(Guid customerId);
+
 
     }
 }
