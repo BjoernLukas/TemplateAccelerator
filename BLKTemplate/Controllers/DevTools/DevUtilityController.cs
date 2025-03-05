@@ -15,6 +15,23 @@ public class DevUtilityController : ControllerBase
     {
         _betaMaxDbContext = betaMaxDbContext;
         _movieRentalCalculationService = movieRentalCalculationService;
+    }     
+
+    [HttpPost("1_CreateDemoCustomer")]
+    public IActionResult CreateDemoCustomer()
+    {
+        var customer = new Customer
+        {
+            Id = Guid.Parse("265f9212-67e1-4dda-b601-0be5b0164c06"),
+            Name = "John Developer",
+            Remarks = "Frequent renter",
+            Gender = GenderInfo.Male
+        };
+
+        _betaMaxDbContext.Set<Customer>().Add(customer);
+        _betaMaxDbContext.SaveChanges();
+
+        return Ok(customer);
     }
 
     [HttpPost("2_CreateDemoMovies")]
@@ -33,23 +50,6 @@ public class DevUtilityController : ControllerBase
         _betaMaxDbContext.SaveChanges();
 
         return Ok("Demo Movies created");
-    }
-
-    [HttpPost("1_CreateDemoCustomer")]
-    public IActionResult CreateDemoCustomer()
-    {
-        var customer = new Customer
-        {
-            Id = Guid.Parse("265f9212-67e1-4dda-b601-0be5b0164c06"),
-            Name = "John Developer",
-            Remarks = "Frequent renter",
-            Gender = GenderInfo.Male
-        };
-
-        _betaMaxDbContext.Set<Customer>().Add(customer);
-        _betaMaxDbContext.SaveChanges();
-
-        return Ok(customer);
     }
 
     [HttpPost("3_CreateDemoRentalsForAllMovies")]

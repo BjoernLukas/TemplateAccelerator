@@ -54,7 +54,7 @@ namespace BetaMaxRMS.Services
                     case PriceCode.Regular:
                         thisAmount += 2;
                         if (currentMovieRental.DaysRented > 2)
-                            thisAmount += (double)((currentMovieRental.DaysRented - 2) * 1.5); //Todo: Check if precision is lost when casting.. its ok but the the other way around 
+                            thisAmount += (double)((currentMovieRental.DaysRented - 2) * 1.5); //Check if precision is lost when casting.. its ok but the the other way around 
                         break;
 
                     case PriceCode.NewRelease:
