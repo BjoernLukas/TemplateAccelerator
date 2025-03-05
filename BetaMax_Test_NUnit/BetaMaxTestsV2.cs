@@ -1,11 +1,8 @@
 ﻿using BetaMaxRMS.BetaMaxModels;
 using BetaMaxRMS.DataUtility;
 using BetaMaxRMS.Services;
-using Castle.Core.Resource;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
-using System;
-using System.Linq;
+
 
 namespace BetaMaxRMS.Tests
 {
@@ -23,11 +20,10 @@ namespace BetaMaxRMS.Tests
 
             _dbContext = new BetaMaxDbContext(options);
 
-
             _dbContext.Customer.Add(CreateNewCustomer());
-            _dbContext.Movie.AddRange(CreateAllMovies());
-            //MovieRental will be added in the test methods depending on the test case
+            _dbContext.Movie.AddRange(CreateAllMovies());            
             _dbContext.SaveChanges();
+            //MovieRental will be added in the test methods depending on the test case
 
             _rentalCalculationService = new MovieRentalCalculationService(_dbContext);
         }
@@ -73,9 +69,52 @@ namespace BetaMaxRMS.Tests
 
         }
 
+        [Test]
+        public void GetTotalAmountSingleNewRelease()
+        {
+            // Arrange
+            var expectedAmount = 9; //The cell is a new release 3 * 3 = 9
+            var customer = _dbContext.Customer.Single();
+            var specificMovies = _dbContext.Movie.Where(m => m.Title == "The Cell").ToList();
+            var movieRentals = CreateDemoRentalsForSpecificMovies(specificMovies);
+
+            _dbContext.MovieRental.AddRange(movieRentals);
+            _dbContext.SaveChanges();
+
+            // Act
+            var calculatedAmount = _rentalCalculationService.GetTotalAmountForCustomerV2(customer.Id);
+
+            // Assert
+            Assert.That(calculatedAmount, Is.EqualTo(expectedAmount));
+
+        }
+
+        [Test]
+        public void GetTotalAmountMultipleRegular()
+        {
+            // Arrange
+            var expectedAmount = 7.5m;
+            var customer = _dbContext.Customer.Single();
+            var movieTitles = new List<string> { "Plan 9 from Outer Space", "8 1/2", "Eraserhead" };
+            var specificMovies = _dbContext.Movie.Where(m => movieTitles.Contains(m.Title)).ToList();
+            var movieRentals = CreateDemoRentalsForSpecificMovies(specificMovies);
+
+            _dbContext.MovieRental.AddRange(movieRentals);
+            _dbContext.SaveChanges();
+
+            // Act
+            var calculatedAmount = _rentalCalculationService.GetTotalAmountForCustomerV2(customer.Id);
+
+            // Assert
+            Assert.That(calculatedAmount, Is.EqualTo(expectedAmount));
+
+        }
+
+        //TODO: Add Unit Test for SimulateHandInTimeMockData and UpdateWhenHandIn
+
 
         #region Helper Methods
-        
+
         private static List<Movie> CreateAllMovies()
         {
             return new List<Movie>
@@ -159,7 +198,7 @@ namespace BetaMaxRMS.Tests
             var endRentalTime = startRentalTime.AddDays(daysRented);
 
             return endRentalTime;
-        }
+        }       
 
         #endregion
     }
