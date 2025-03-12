@@ -12,7 +12,7 @@ using TemplateAcceleratorV1.DataUtility;
 namespace TemplateAcceleratorV1.Migrations
 {
     [DbContext(typeof(TemplateDbContext))]
-    [Migration("20250226134042_InitialCreate")]
+    [Migration("20250310145342_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
