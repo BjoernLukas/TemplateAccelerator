@@ -156,12 +156,35 @@ public class PersonController : ControllerBase
         {
             return NotFound();  // 404 if personUpdate with given ID does not exist
         }
-        
+
         existingPerson.Age = inputAge;
 
         _templateDbContext.SaveChanges();
 
         return Ok(existingPerson);  // Return the updated personUpdate with 200 OK
+    }
+
+    /// <summary>
+    /// Deletes a Person by ID.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [HttpDelete("DeletePerson/{id}")]
+    public IActionResult DeletePerson(Guid id)
+    {
+        var existingPerson = _templateDbContext.Set<Person>().FirstOrDefault(p => p.PersonId == id);
+        if (existingPerson == null)
+        {
+            return NotFound();  // 404 if person with given ID does not exist
+        }
+
+        _templateDbContext.Set<Person>().Remove(existingPerson);
+        _templateDbContext.SaveChanges();
+
+        return Ok();  // Return 200 OK
     }
 
 
