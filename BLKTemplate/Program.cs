@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NSwag;
 using TemplateAcceleratorV1.DataUtility;
 
 namespace TemplateAcceleratorV1
@@ -7,18 +8,15 @@ namespace TemplateAcceleratorV1
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(args);            
 
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            
+            builder.Services.AddControllers();            
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddOpenApiDocument();
 
             // Register the TemplateDbContext with dependency injection  
             builder.Services.AddDbContext<TemplateDbContext>(options => { options
-                .UseSqlServer(builder.Configuration["ConnectionStrings:BLKDbContextConnection"]); });
+                .UseSqlServer(builder.Configuration["ConnectionStrings:BLKDbContextConnection"]); });            
 
             var app = builder.Build();
 
@@ -33,6 +31,8 @@ namespace TemplateAcceleratorV1
             app.UseAuthorization();
 
             app.MapControllers();
+
+           
 
             app.Run();
         }

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35309.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateAcceleratorV1", "BLKTemplate\TemplateAcceleratorV1.csproj", "{094A2D95-BECF-47C0-AC1C-134C12FB0EC5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkateProExercise", "BLKTemplate\SkateProExercise.csproj", "{094A2D95-BECF-47C0-AC1C-134C12FB0EC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiClientGeneration", "ApiClientGeneration\ApiClientGeneration.csproj", "{CAAC7234-756D-49C5-9548-0095CB81D7F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{094A2D95-BECF-47C0-AC1C-134C12FB0EC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{094A2D95-BECF-47C0-AC1C-134C12FB0EC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{094A2D95-BECF-47C0-AC1C-134C12FB0EC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAAC7234-756D-49C5-9548-0095CB81D7F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAAC7234-756D-49C5-9548-0095CB81D7F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAAC7234-756D-49C5-9548-0095CB81D7F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAAC7234-756D-49C5-9548-0095CB81D7F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
