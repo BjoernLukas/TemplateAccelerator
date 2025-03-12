@@ -4,22 +4,27 @@ using TemplateAcceleratorV1.Models;
 namespace TemplateAcceleratorV1.Controllers;
 
 /// <summary>
-/// This is a controller for Person Entity
+/// This is a controller for managing Person entities.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class PersonController : ControllerBase
 {
     private readonly TemplateDbContext _templateDbContext;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PersonController"/> class.
+    /// </summary>
+    /// <param name="templateDbContext">The template database context.</param>
     public PersonController(TemplateDbContext templateDbContext)
     {
         _templateDbContext = templateDbContext;
     }
 
     /// <summary>
-    /// This will return a personUpdate by name
+    /// Retrieves a person by name.
     /// </summary>
-    /// <param name="name"></param>    
+    /// <param name="name">The name of the person.</param>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -32,10 +37,10 @@ public class PersonController : ControllerBase
     }
 
     /// <summary>
-    /// Returns a personUpdate by id (For testing "9b37bbe0-e7ea-40bb-a986-11835fbfa0ae"
+    /// Retrieves a person by ID.
     /// </summary>
-    /// <param name="inputId"></param>    
-    /// <returns></returns>
+    /// <param name="inputId">The ID of the person.</param>
+    /// <returns>The person with the specified ID.</returns>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -53,9 +58,9 @@ public class PersonController : ControllerBase
     //with [HttpGet("id/{id:guid}")] then the middleware will check if input is a valid guild and if not respond with 404 Not found 
 
     /// <summary>
-    /// This will return all persons, useful when testing the other endpoints 
+    /// Retrieves all persons.
     /// </summary>
-    /// <returns>List of Person </returns>
+    /// <returns>A list of all persons.</returns>
     [HttpGet("GetAll")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -69,13 +74,13 @@ public class PersonController : ControllerBase
     }
 
     /// <summary>
-    /// Creates a new Person.
+    /// Creates a new person.
     /// </summary>
-    /// <remarks> if name is missing ASP middleware will return return a 400 Bad Request </remarks>
-    /// <param name="name"></param>
-    /// <param name="age"></param>
-    /// <param name="description"></param>
-    /// <returns></returns>
+    /// <remarks>If the name is missing, the ASP middleware will return a 400 Bad Request.</remarks>
+    /// <param name="name">The name of the person.</param>
+    /// <param name="age">The age of the person.</param>
+    /// <param name="description">The description of the person.</param>
+    /// <returns>The created person.</returns>
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost("CreatePerson")]
@@ -88,7 +93,6 @@ public class PersonController : ControllerBase
             Description = description,
         };
 
-
         _templateDbContext.Set<Person>().Add(person);
         _templateDbContext.SaveChanges();
 
@@ -96,24 +100,24 @@ public class PersonController : ControllerBase
     }
 
     /// <summary>
-    /// Simulates a long running task,
+    /// Starts an import job, simulating a long running task.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A response indicating that the task is being processed.</returns>
     [HttpPost("StartImportJob")]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]    
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
     public IActionResult StartImportJob()
     {
-        //TODO: Implement a long running task like a que or a big import job
-        //Remark we need a webhook or some kind of event to tell with the event is finished
+        //TODO: Implement a long running task like a queue or a big import job
+        //Remark we need a webhook or some kind of event to tell when the event is finished
 
         return Accepted("Task is being processed."); // returns 202 Accepted
     }
 
     /// <summary>
-    /// Updates the Person
+    /// Updates a person.
     /// </summary>
-    /// <param name="personUpdate"></param>
-    /// <returns></returns>
+    /// <param name="personUpdate">The updated person object.</param>
+    /// <returns>The updated person.</returns>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -128,7 +132,7 @@ public class PersonController : ControllerBase
             return NotFound();  // 404 if personUpdate with given ID does not exist
         }
 
-        // Update the personUpdate's details
+        // Update the person's details
         existingPerson.Name = personUpdate.Name;
         existingPerson.Age = personUpdate.Age;
         existingPerson.Description = personUpdate.Description;
@@ -140,11 +144,11 @@ public class PersonController : ControllerBase
 
     //Remark: Patch was not on the list but I added it here.
     /// <summary>
-    /// Updates the age
+    /// Updates the age of a person.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="inputAge"></param>
-    /// <returns></returns>
+    /// <param name="id">The ID of the person.</param>
+    /// <param name="inputAge">The new age of the person.</param>
+    /// <returns>The updated person.</returns>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -161,14 +165,14 @@ public class PersonController : ControllerBase
 
         _templateDbContext.SaveChanges();
 
-        return Ok(existingPerson);  // Return the updated personUpdate with 200 OK
+        return Ok(existingPerson);  // Return the updated person with 200 OK
     }
 
     /// <summary>
-    /// Deletes a Person by ID.
+    /// Deletes a person by ID.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The ID of the person to delete.</param>
+    /// <returns>A response indicating the success of the deletion.</returns>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -187,9 +191,6 @@ public class PersonController : ControllerBase
         return Ok();  // Return 200 OK
     }
 
-
-
-    //TODO: Not sure how I will do a 500 Internal Server Error, for if the SQL server is down or something else goes wrong.
-    // tryCatch all  _templateDbContext.SaveChanges(); There must be something more elegant.  
-
+    //TODO: Not sure how I will handle a 500 Internal Server Error, for example if the SQL server is down or something else goes wrong.
+    // try-catch all  _templateDbContext.SaveChanges(); There must be something more elegant.  
 }
